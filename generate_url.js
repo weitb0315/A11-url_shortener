@@ -21,3 +21,4 @@ function generateUrl() {
   // return the generated url
   return shorterUrl
 }
+module.exports = generateUrl
