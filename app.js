@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 // 載入產生短網址function
 const generateUrl = require('./generate_url')
-const short = generateUrl()
+let short = generateUrl()
 const bodyParser = require('body-parser')
 const Url = require('./models/url')
 
@@ -29,13 +29,25 @@ app.set('view engine', 'hbs')
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
-  res.render('index', { short })
+  // res.render('index', { short })
+  res.render('index')
 })
 
 app.post('/', (req, res) => {
   const url = req.body.url
-  return Url.create({ url, short })
-    .then(() => res.redirect('/'))
+  return Url.findOne({ url })
+    .lean()
+    .then(url => {
+      if (url) {
+        // if url exist, the shorten url is the same pair
+        short = url.short
+        res.render('index', { short })
+      } else {
+        // else generate a new shorten url
+        Url.create({ url, short })
+        res.render('index', { short })
+      }
+    })
     .catch(error => console.log(error))
 })
 
