@@ -15,7 +15,7 @@ function generateUrl() {
   }
 
   // generate url
-  let shorterUrl = 'https://tzbin-url/'
+  let shorterUrl = 'http://localhost:3000/'
   shorterUrl += randomCharacters5
 
   // return the generated url

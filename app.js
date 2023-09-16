@@ -50,14 +50,16 @@ app.post('/', (req, res) => {
     .catch(error => console.log(error))
 })
 
-// app.get('https://tzbin-url/:id', (req, res) => {
-//   const id = req.params.id
-//   console.log(id)
-//   // return Url.findOne({ shortenUrl })
-//   //   .lean()
-//   //   .then()
-//   //   .catch(error => console.log(error))
-// })
+app.get('/:id', (req, res) => {
+  const id = req.params.id
+  short = 'http://localhost:3000/' + id
+  return Url.findOne({ short })
+    .lean()
+    .then((shortUrl) => {
+      res.redirect(shortUrl.url)
+    })
+    .catch(error => console.log(error))
+})
 
 // 設定 port 3000
 app.listen(port, () => {
