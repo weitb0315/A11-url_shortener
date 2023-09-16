@@ -29,7 +29,6 @@ app.set('view engine', 'hbs')
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
-  // res.render('index', { short })
   res.render('index')
 })
 
@@ -37,10 +36,10 @@ app.post('/', (req, res) => {
   const url = req.body.url
   return Url.findOne({ url })
     .lean()
-    .then(url => {
-      if (url) {
+    .then((existUrl) => {
+      if (existUrl) {
         // if url exist, the shorten url is the same pair
-        short = url.short
+        short = existUrl.short
         res.render('index', { short })
       } else {
         // else generate a new shorten url
@@ -50,6 +49,15 @@ app.post('/', (req, res) => {
     })
     .catch(error => console.log(error))
 })
+
+// app.get('https://tzbin-url/:id', (req, res) => {
+//   const id = req.params.id
+//   console.log(id)
+//   // return Url.findOne({ shortenUrl })
+//   //   .lean()
+//   //   .then()
+//   //   .catch(error => console.log(error))
+// })
 
 // 設定 port 3000
 app.listen(port, () => {
