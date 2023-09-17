@@ -8,6 +8,7 @@ const generateUrl = require('./generate_url')
 let short = generateUrl()
 const bodyParser = require('body-parser')
 const Url = require('./models/url')
+let alert = ''
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -37,14 +38,20 @@ app.post('/', (req, res) => {
   return Url.findOne({ url })
     .lean()
     .then((existUrl) => {
-      if (existUrl) {
+      if (url.length === 0) {
+        alert = 'Please input your url!'
+        res.render('index', { alert })
+      } else if (existUrl) {
         // if url exist, the shorten url is the same pair
         short = existUrl.short
-        res.render('index', { short })
+        alert = 'Success! Please use the link:'
+        res.render('index', { short, alert })
       } else {
         // else generate a new shorten url
+        alert = 'Success! Please use the link:'
+        short = generateUrl()
         Url.create({ url, short })
-        res.render('index', { short })
+        res.render('index', { short, alert })
       }
     })
     .catch(error => console.log(error))
