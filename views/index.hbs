@@ -1,5 +1,7 @@
 <form action="/" method="POST">
-  <p>{{alert}}</p>
-  <input type="text" placeholder="input URL here" name="url" value="{{short}}">
-  <button type="submit">Shorten</button>
+  <div class="container d-flex flex-column align-items-center">
+    <h2>{{alert}}</h2>
+    <input type="text" style="width: 400px" class="mb-3" placeholder="input URL here" name="url" value="{{short}}">
+    <button type="submit" class="btn btn-outline-primary" style="width: 100px">Shorten</button>
+  </div>
 </form>
